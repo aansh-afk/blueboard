@@ -180,7 +180,7 @@ def cover_page_bg(c, doc) -> None:
 
     c.setFillColor(TEXT_TERTIARY)
     c.setFont("Mono", 8)
-    c.drawCentredString(W / 2, H - 74, "ltf1 - onboarding.report")
+    c.drawCentredString(W / 2, H - 74, "vvg - client-onboarding.report")
 
     y_title = H - 200
     c.setFillColor(INDIGO)
@@ -189,15 +189,15 @@ def cover_page_bg(c, doc) -> None:
 
     c.setFillColor(TEXT_PRIMARY)
     c.setFont("Inter-ExtraBold", 44)
-    c.drawString(MARGIN, y_title - 20, "LTF1")
+    c.drawString(MARGIN, y_title - 20, "VVG")
 
     c.setFillColor(TEXT_TERTIARY)
     c.setFont("Mono-Medium", 11)
-    c.drawString(MARGIN, y_title - 44, "Legion Task Framework")
+    c.drawString(MARGIN, y_title - 44, "Aansh Naidu - Co-Founder, Vivid Verse Global")
 
     c.setFillColor(INDIGO_GLOW)
     c.setFont("Inter-SemiBold", 16)
-    c.drawString(MARGIN, y_title - 72, "Client Discovery Onboarding")
+    c.drawString(MARGIN, y_title - 72, "Thanks for working with us - Client Onboarding")
 
     c.setFillColor(INDIGO)
     c.rect(MARGIN, y_title - 87, 80, 3, fill=1, stroke=0)
@@ -211,9 +211,9 @@ def cover_page_bg(c, doc) -> None:
     c.rect(MARGIN, y_desc - 10, 390, 84, fill=1, stroke=1)
 
     items = [
-        "Capture business goals, constraints, and success metrics",
-        "Align design and engineering scope before implementation",
-        "Create clear decision ownership and launch expectations",
+        "Thank you for trusting VVG with your product direction",
+        "We align goals, scope, and execution before design starts",
+        "You receive a clear timeline, milestones, and owners",
     ]
     for i, item in enumerate(items):
         c.setFillColor(INDIGO)
@@ -261,7 +261,7 @@ def cover_page_bg(c, doc) -> None:
     c.drawString(MARGIN + 180, 80, "SCOPE:")
     c.setFillColor(TEXT_SECONDARY)
     c.setFont("Mono", 9)
-    c.drawString(MARGIN + 230, 80, "Client discovery + onboarding")
+    c.drawString(MARGIN + 230, 80, "Client welcome + discovery")
 
     c.setFillColor(TEXT_MUTED)
     c.setFont("Mono", 7)
@@ -282,10 +282,10 @@ def dark_page_bg(c, doc) -> None:
 
     c.setFillColor(INDIGO)
     c.setFont("Mono-Bold", 8)
-    c.drawString(MARGIN, H - 22, "LTF1")
+    c.drawString(MARGIN, H - 22, "VVG")
     c.setFillColor(TEXT_TERTIARY)
     c.setFont("Mono", 7)
-    c.drawCentredString(W / 2, H - 22, "// CLIENT DISCOVERY QUESTIONNAIRE")
+    c.drawCentredString(W / 2, H - 22, "// AANSH NAIDU CLIENT ONBOARDING PACK")
     c.setFillColor(TEXT_MUTED)
     c.drawRightString(W - MARGIN, H - 22, str(date.today()))
 
@@ -464,9 +464,16 @@ def build_pdf(output_path: Path) -> Path:
 
     story.append(PageBreak())
 
-    story.append(Paragraph("// EXECUTIVE SUMMARY", S["label"]))
+    story.append(Paragraph("// WELCOME", S["label"]))
     story.append(Paragraph(
-        "Use this onboarding document to collect all design, product, technical, and delivery requirements before writing code or mockups.",
+        "Thanks for choosing Vivid Verse Global. I am Aansh Naidu, co-founder at VVG. This packet keeps our collaboration fast, clear, and low-friction by aligning outcomes, scope, technical constraints, and decision ownership before execution.",
+        S["body"],
+    ))
+    story.append(Spacer(1, 8))
+
+    story.append(Paragraph("// WHAT HAPPENS NEXT", S["label"]))
+    story.append(Paragraph(
+        "1) You complete this questionnaire. 2) We send a concise project brief and implementation roadmap. 3) We start design and build with agreed milestones and feedback cadence.",
         S["body"],
     ))
     story.append(Spacer(1, 8))
@@ -504,6 +511,6 @@ def build_pdf(output_path: Path) -> Path:
 
 
 if __name__ == "__main__":
-    out = ROOT / "client_onboarding_dark_terminal.pdf"
+    out = ROOT / "vvg_client_onboarding_welcome.pdf"
     path = build_pdf(out)
     print(f"PDF generated: {path}")

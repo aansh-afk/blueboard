@@ -85,7 +85,7 @@ function formToJson() {
 
 function formToMarkdown() {
   const lines = [
-    "# Client Discovery Questionnaire - Response",
+    "# VVG Client Discovery Questionnaire - Response",
     "",
     `Date: ${toIsoDate(new Date())}`,
     "",
@@ -132,12 +132,12 @@ inputs.forEach((input) => {
 
 saveDraftButton.addEventListener("click", () => {
   const json = JSON.stringify(formToJson(), null, 2);
-  download(`ltf1-questionnaire-${toIsoDate(new Date())}.json`, json, "application/json");
+  download(`vvg-questionnaire-${toIsoDate(new Date())}.json`, json, "application/json");
 });
 
 exportMarkdownButton.addEventListener("click", () => {
   const md = formToMarkdown();
-  download(`ltf1-questionnaire-${toIsoDate(new Date())}.md`, md, "text/markdown");
+  download(`vvg-questionnaire-${toIsoDate(new Date())}.md`, md, "text/markdown");
 });
 
 printButton.addEventListener("click", () => {

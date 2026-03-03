@@ -234,6 +234,13 @@ h2 {
   font-weight: 700;
 }
 
+h3 {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 700;
+}
+
 .label {
   margin: 8px 0 6px;
   color: var(--indigo);
@@ -241,6 +248,32 @@ h2 {
   font-weight: 600;
   font-size: 8px;
   letter-spacing: 0.03em;
+}
+
+.welcome-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  box-shadow: 4px 4px 0 #000;
+  padding: 16px;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.welcome-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--indigo);
+}
+
+.welcome-card p {
+  margin: 0;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 .field-grid {
