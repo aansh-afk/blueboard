@@ -26,8 +26,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at 85% 5%, #1a1a2c 0%, var(--bg-base) 40%),
-    linear-gradient(var(--bg-base), var(--bg-base));
+  background: var(--bg-base);
   color: var(--text-secondary);
   font-family: "Inter", sans-serif;
 }
@@ -36,22 +35,37 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: linear-gradient(#0d0d10 0.5px, transparent 0.5px),
-    linear-gradient(90deg, #0d0d10 0.5px, transparent 0.5px);
-  background-size: 40px 40px;
+  background-image:
+    linear-gradient(#101015 1px, transparent 1px),
+    linear-gradient(90deg, #101015 1px, transparent 1px);
+  background-size: 36px 36px;
   pointer-events: none;
-  opacity: 0.28;
+  opacity: 0.4;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(#14141c, #14141c) 12% 18% / 22px 22px no-repeat,
+    linear-gradient(#14141c, #14141c) 78% 10% / 26px 26px no-repeat,
+    linear-gradient(#14141c, #14141c) 86% 52% / 30px 30px no-repeat,
+    linear-gradient(#14141c, #14141c) 20% 74% / 18px 18px no-repeat,
+    linear-gradient(#14141c, #14141c) 66% 82% / 24px 24px no-repeat;
+  opacity: 0.65;
 }
 
 .topbar {
   position: sticky;
   top: 0;
   z-index: 20;
-  height: 36px;
+  min-height: 44px;
   display: grid;
   grid-template-columns: 1fr 2fr auto;
   align-items: center;
-  padding: 0 20px;
+  padding: 8px 24px;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
 }
@@ -103,8 +117,8 @@ body::before {
 
 .page-shell {
   position: relative;
-  width: min(1160px, 100% - 32px);
-  margin: 28px auto 80px;
+  width: min(1080px, 100% - 44px);
+  margin: 34px auto 96px;
   z-index: 1;
 }
 
@@ -112,8 +126,8 @@ body::before {
   background: var(--bg-card);
   border: 2px solid var(--border);
   box-shadow: 4px 4px 0 #000;
-  padding: 18px 20px 24px;
-  margin-bottom: 20px;
+  padding: 28px;
+  margin-bottom: 22px;
 }
 
 .terminal-chrome {
@@ -121,7 +135,7 @@ body::before {
   align-items: center;
   gap: 10px;
   border: 2px solid var(--border);
-  padding: 8px 12px;
+  padding: 10px 14px;
   background: var(--bg-surface);
 }
 
@@ -144,7 +158,7 @@ body::before {
 .dot.green { background: var(--green); }
 
 .hero-command {
-  margin: 20px 0 10px;
+  margin: 24px 0 12px;
   color: var(--indigo);
   font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
@@ -160,7 +174,7 @@ h1 {
 }
 
 .hero-subname {
-  margin: 8px 0 4px;
+  margin: 10px 0 6px;
   color: var(--text-tertiary);
   font-family: "IBM Plex Mono", monospace;
   font-weight: 500;
@@ -178,7 +192,7 @@ h1 {
   width: 80px;
   height: 3px;
   background: var(--indigo);
-  margin-top: 14px;
+  margin-top: 18px;
 }
 
 .metrics-grid {
@@ -194,7 +208,7 @@ h1 {
   box-shadow: 4px 4px 0 #000;
   text-align: center;
   position: relative;
-  padding: 14px 10px 12px;
+  padding: 18px 12px 16px;
 }
 
 .metric-card::before {
@@ -224,13 +238,13 @@ h1 {
 
 .stack {
   display: grid;
-  gap: 12px;
+  gap: 16px;
 }
 
 .content-card {
   background: linear-gradient(var(--bg-card), var(--bg-card));
   border: 2px solid var(--border);
-  padding: 16px;
+  padding: 24px;
   box-shadow: 4px 4px 0 #000;
 }
 
@@ -239,8 +253,8 @@ h1 {
   align-items: center;
   gap: 12px;
   border-top: 1px solid var(--border);
-  padding-top: 10px;
-  margin-bottom: 8px;
+  padding-top: 14px;
+  margin-bottom: 12px;
 }
 
 .section-divider span {
@@ -277,8 +291,8 @@ h3 {
   background: var(--bg-card);
   border: 2px solid var(--border);
   box-shadow: 4px 4px 0 #000;
-  padding: 16px;
-  margin-bottom: 14px;
+  padding: 24px;
+  margin-bottom: 18px;
   position: relative;
 }
 
@@ -294,13 +308,13 @@ h3 {
 
 .welcome-card p {
   margin: 0;
-  line-height: 1.65;
+  line-height: 1.8;
   color: var(--text-secondary);
   font-size: 14px;
 }
 
 .section-helper {
-  margin: 0 0 10px;
+  margin: 0 0 14px;
   color: var(--text-tertiary);
   font-size: 14px;
 }
@@ -337,7 +351,7 @@ h3 {
 
 label {
   display: grid;
-  gap: 5px;
+  gap: 8px;
   color: var(--text-secondary);
   font-size: 8.5px;
   font-family: "IBM Plex Mono", monospace;
@@ -350,11 +364,11 @@ select {
   border: 2px solid var(--border);
   background: var(--bg-surface);
   color: var(--text-primary);
-  padding: 9px 10px;
+  padding: 12px 13px;
   border-radius: 0;
   outline: none;
   font-family: "Inter", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 input:focus,
@@ -366,8 +380,8 @@ select:focus {
 .checks-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .checks-grid.two-col {
@@ -377,8 +391,8 @@ select:focus {
 .checks-grid label {
   border: 2px solid var(--border);
   background: var(--bg-surface);
-  padding: 10px;
-  min-height: 44px;
+  padding: 12px;
+  min-height: 52px;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -390,8 +404,8 @@ select:focus {
 .check-item {
   border: 2px solid var(--border);
   background: var(--bg-surface);
-  padding: 10px;
-  min-height: 44px;
+  padding: 12px;
+  min-height: 52px;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -404,7 +418,7 @@ select:focus {
   height: 14px;
   border: 2px solid var(--border);
   background: var(--bg-surface);
-  margin: 4px 0 10px;
+  margin: 8px 0 14px;
 }
 
 .progress-bar {
@@ -428,7 +442,7 @@ input[type="checkbox"] {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .top-gap {
@@ -444,7 +458,7 @@ button {
   font-family: "IBM Plex Mono", monospace;
   font-weight: 600;
   font-size: 10px;
-  padding: 8px 12px;
+  padding: 9px 14px;
   cursor: pointer;
   min-width: 110px;
 }
@@ -475,14 +489,14 @@ button:disabled {
 }
 
 .single-question {
-  gap: 8px;
+  gap: 10px;
 }
 
 .single-question-label {
   display: block;
   color: var(--text-primary);
   font-size: 18px;
-  line-height: 1.4;
+  line-height: 1.45;
   font-family: "Inter", sans-serif;
   font-weight: 600;
 }
@@ -490,7 +504,7 @@ button:disabled {
 .help-tip-box {
   border: 2px solid var(--border);
   background: var(--bg-surface);
-  padding: 10px;
+  padding: 12px;
 }
 
 .jump-grid {
@@ -499,6 +513,74 @@ button:disabled {
 
 .question-animate {
   animation: questionIn 220ms ease-out;
+}
+
+.section-picker {
+  position: relative;
+}
+
+.picker-label {
+  margin: 0 0 8px;
+  color: var(--text-secondary);
+  font-size: 8.5px;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.picker-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  padding: 12px 14px;
+  min-width: 0;
+  font-size: 12px;
+  background: var(--bg-surface);
+  box-shadow: none;
+}
+
+.picker-caret {
+  color: var(--indigo-glow);
+  margin-left: 10px;
+}
+
+.picker-menu {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  max-height: 260px;
+  overflow: auto;
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  box-shadow: 4px 4px 0 #000;
+  z-index: 30;
+}
+
+.picker-option {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 10px;
+  text-align: left;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 11px 12px;
+  color: var(--text-secondary);
+}
+
+.picker-option:last-child {
+  border-bottom: none;
+}
+
+.picker-option.active {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
 }
 
 @keyframes questionIn {

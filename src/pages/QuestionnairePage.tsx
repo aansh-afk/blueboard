@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { sections } from "../questionnaire";
 import { submitQuestionnaire } from "../api/convexHttp";
 import type { AnswerValue, AnswersMap, QuestionField } from "../types";
@@ -145,6 +145,8 @@ export function QuestionnairePage() {
   const [submittedId, setSubmittedId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [sectionMenuOpen, setSectionMenuOpen] = useState(false);
+  const sectionMenuRef = useRef<HTMLDivElement | null>(null);
 
   const completion = useMemo(() => {
     const values = Object.values(answers);
@@ -170,6 +172,34 @@ export function QuestionnairePage() {
       }),
     );
   }, [answers, activeIndex, showIntro]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent): void {
+      if (!sectionMenuRef.current) {
+        return;
+      }
+      if (!sectionMenuRef.current.contains(event.target as Node)) {
+        setSectionMenuOpen(false);
+      }
+    }
+
+    function handleEscape(event: KeyboardEvent): void {
+      if (event.key === "Escape") {
+        setSectionMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  useEffect(() => {
+    setSectionMenuOpen(false);
+  }, [activeIndex]);
 
   async function onSubmit(): Promise<void> {
     setSubmitting(true);
@@ -259,22 +289,44 @@ export function QuestionnairePage() {
               <div className="progress-bar" style={{ width: `${completion}%` }} />
             </section>
             <div className="field-grid two jump-grid">
-              <label>
-                Jump to section
-                <select
-                  value={current.sectionId}
-                  onChange={(event) => {
-                    const nextSectionId = event.target.value;
-                    setActiveIndex(sectionStartIndex[nextSectionId] ?? 0);
-                  }}
+              <div className="section-picker" ref={sectionMenuRef}>
+                <p className="picker-label">Jump to section</p>
+                <button
+                  type="button"
+                  className="picker-trigger"
+                  aria-haspopup="listbox"
+                  aria-expanded={sectionMenuOpen}
+                  onClick={() => setSectionMenuOpen((prev) => !prev)}
                 >
-                  {sections.map((section) => (
-                    <option key={section.id} value={section.id}>
-                      [{section.id}] {section.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  <span>
+                    [{current.sectionId}] {current.sectionTitle}
+                  </span>
+                  <span className="picker-caret">{sectionMenuOpen ? "▴" : "▾"}</span>
+                </button>
+
+                {sectionMenuOpen ? (
+                  <ul className="picker-menu" role="listbox" aria-label="Sections">
+                    {sections.map((section) => {
+                      const isActive = section.id === current.sectionId;
+                      return (
+                        <li key={section.id}>
+                          <button
+                            type="button"
+                            className={`picker-option${isActive ? " active" : ""}`}
+                            onClick={() => {
+                              setActiveIndex(sectionStartIndex[section.id] ?? 0);
+                              setSectionMenuOpen(false);
+                            }}
+                          >
+                            <span>[{section.id}]</span>
+                            <span>{section.title}</span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : null}
+              </div>
               <div className="help-tip-box">
                 <p className="preview-label">Need help?</p>
                 <p className="micro-text">You can skip any question and continue.</p>
