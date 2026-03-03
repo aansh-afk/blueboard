@@ -13,10 +13,17 @@ export type ResponseDetail = ResponseSummary & {
   answers: AnswersMap;
 };
 
-const baseUrl = import.meta.env.VITE_CONVEX_HTTP_URL;
+const baseUrl = import.meta.env.VITE_CONVEX_HTTP_URL as string | undefined;
 
-if (!baseUrl) {
-  throw new Error("Missing VITE_CONVEX_HTTP_URL. Add it in your Vercel environment settings.");
+export function isConvexConfigured(): boolean {
+  return Boolean(baseUrl);
+}
+
+function getBaseUrl(): string {
+  if (!baseUrl) {
+    throw new Error("Missing VITE_CONVEX_HTTP_URL. Add it in Vercel project environment variables.");
+  }
+  return baseUrl;
 }
 
 async function parseJson<T>(response: Response): Promise<T> {
@@ -33,7 +40,7 @@ export async function submitQuestionnaire(payload: {
   contactInfo: string;
   answers: AnswersMap;
 }): Promise<{ id: string }> {
-  const response = await fetch(`${baseUrl}/api/submit`, {
+  const response = await fetch(`${getBaseUrl()}/api/submit`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -42,11 +49,11 @@ export async function submitQuestionnaire(payload: {
 }
 
 export async function listResponses(): Promise<Array<ResponseSummary>> {
-  const response = await fetch(`${baseUrl}/api/responses`);
+  const response = await fetch(`${getBaseUrl()}/api/responses`);
   return parseJson<Array<ResponseSummary>>(response);
 }
 
 export async function getResponse(id: string): Promise<ResponseDetail> {
-  const response = await fetch(`${baseUrl}/api/response?id=${encodeURIComponent(id)}`);
+  const response = await fetch(`${getBaseUrl()}/api/response?id=${encodeURIComponent(id)}`);
   return parseJson<ResponseDetail>(response);
 }

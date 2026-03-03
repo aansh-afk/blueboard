@@ -1,8 +1,11 @@
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import { QuestionnairePage } from "./pages/QuestionnairePage";
 import { ResponsesPage } from "./pages/ResponsesPage";
+import { isConvexConfigured } from "./api/convexHttp";
 
 export function App() {
+  const convexReady = isConvexConfigured();
+
   return (
     <div>
       <header className="topbar">
@@ -13,6 +16,12 @@ export function App() {
           <Link to="/responses">Responses</Link>
         </nav>
       </header>
+
+      {!convexReady ? (
+        <p className="status error center-banner">
+          Convex not configured yet. Add `VITE_CONVEX_HTTP_URL` in Vercel environment variables.
+        </p>
+      ) : null}
 
       <Routes>
         <Route path="/" element={<QuestionnairePage />} />

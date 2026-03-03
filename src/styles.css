@@ -439,6 +439,14 @@ button:hover {
   color: var(--green);
 }
 
+.center-banner {
+  margin: 0;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: #2a0f12;
+  text-align: center;
+}
+
 .responses-layout {
   display: grid;
   grid-template-columns: 320px 1fr;
