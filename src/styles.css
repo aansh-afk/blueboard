@@ -73,6 +73,14 @@ body::before {
   text-align: center;
 }
 
+.topbar-right {
+  margin: 0;
+  text-align: right;
+  color: var(--text-muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 8px;
+}
+
 .topbar-nav {
   display: flex;
   gap: 8px;
@@ -297,6 +305,27 @@ h3 {
   font-size: 14px;
 }
 
+.section-helper.compact {
+  margin-bottom: 8px;
+}
+
+.progress-card {
+  margin-bottom: 12px;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.micro-text {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
 .field-grid {
   display: grid;
   gap: 8px;
@@ -315,7 +344,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   border: 2px solid var(--border);
   background: var(--bg-surface);
@@ -328,7 +358,8 @@ textarea {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   border-color: var(--indigo);
 }
 
@@ -373,7 +404,7 @@ textarea:focus {
   height: 14px;
   border: 2px solid var(--border);
   background: var(--bg-surface);
-  margin-bottom: 12px;
+  margin: 4px 0 10px;
 }
 
 .progress-bar {
@@ -393,22 +424,92 @@ input[type="checkbox"] {
   gap: 10px;
 }
 
+.actions-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.top-gap {
+  margin-top: 12px;
+}
+
 button {
   border: 2px solid var(--border);
   border-radius: 0;
   background: var(--bg-card);
-  box-shadow: 4px 4px 0 #000;
+  box-shadow: 2px 2px 0 #000;
   color: var(--text-primary);
   font-family: "IBM Plex Mono", monospace;
   font-weight: 600;
-  font-size: 11px;
-  padding: 11px 12px;
+  font-size: 10px;
+  padding: 8px 12px;
   cursor: pointer;
+  min-width: 110px;
 }
 
 button:hover {
   border-color: var(--indigo);
   color: var(--indigo-glow);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--indigo);
+  border-color: var(--indigo);
+  color: var(--text-primary);
+}
+
+.btn-primary:hover {
+  color: var(--text-primary);
+  border-color: var(--indigo-glow);
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+}
+
+.single-question {
+  gap: 8px;
+}
+
+.single-question-label {
+  display: block;
+  color: var(--text-primary);
+  font-size: 18px;
+  line-height: 1.4;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
+.help-tip-box {
+  border: 2px solid var(--border);
+  background: var(--bg-surface);
+  padding: 10px;
+}
+
+.jump-grid {
+  align-items: end;
+}
+
+.question-animate {
+  animation: questionIn 220ms ease-out;
+}
+
+@keyframes questionIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .footer {
@@ -520,6 +621,11 @@ button:hover {
   .responses-layout {
     grid-template-columns: 1fr 1fr;
   }
+
+  .progress-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 680px) {
@@ -531,7 +637,8 @@ button:hover {
   }
 
   .topbar-center,
-  .topbar-nav {
+  .topbar-nav,
+  .topbar-right {
     text-align: left;
   }
 
