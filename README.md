@@ -28,6 +28,9 @@ Set:
 
 - `VITE_CONVEX_HTTP_URL` to your Convex site URL, for example:
   - `https://your-project-name.convex.site`
+- Optional fallback: `VITE_CONVEX_URL` (Convex cloud URL). The app will map `.convex.cloud` to `.convex.site` automatically.
+
+After editing `.env.local`, restart `npm run dev`.
 
 Run frontend:
 
@@ -61,7 +64,8 @@ Use these settings in Vercel:
 - Build command: `npm run build`
 - Output directory: `dist`
 - Environment variable:
-  - `VITE_CONVEX_HTTP_URL` = your deployed Convex URL
+  - `VITE_CONVEX_HTTP_URL` = your deployed Convex site URL
+  - Optional fallback: `VITE_CONVEX_URL` = your Convex cloud URL
 
 `vercel.json` includes SPA rewrite support for React Router.
 

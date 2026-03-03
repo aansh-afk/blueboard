@@ -13,7 +13,36 @@ export type ResponseDetail = ResponseSummary & {
   answers: AnswersMap;
 };
 
-const baseUrl = import.meta.env.VITE_CONVEX_HTTP_URL as string | undefined;
+function normalizeBaseUrl(url: string | undefined): string | undefined {
+  if (!url) {
+    return undefined;
+  }
+
+  try {
+    const parsed = new URL(url);
+    return parsed.origin;
+  } catch {
+    return undefined;
+  }
+}
+
+function inferHttpSiteUrl(convexUrl: string | undefined): string | undefined {
+  const normalized = normalizeBaseUrl(convexUrl);
+  if (!normalized) {
+    return undefined;
+  }
+
+  const parsed = new URL(normalized);
+  if (parsed.hostname.endsWith(".convex.cloud")) {
+    parsed.hostname = parsed.hostname.replace(/\.convex\.cloud$/, ".convex.site");
+  }
+  return parsed.origin;
+}
+
+const baseUrl =
+  normalizeBaseUrl(import.meta.env.VITE_CONVEX_HTTP_URL as string | undefined) ??
+  normalizeBaseUrl(import.meta.env.VITE_CONVEX_SITE_URL as string | undefined) ??
+  inferHttpSiteUrl(import.meta.env.VITE_CONVEX_URL as string | undefined);
 
 export function isConvexConfigured(): boolean {
   return Boolean(baseUrl);
@@ -21,7 +50,9 @@ export function isConvexConfigured(): boolean {
 
 function getBaseUrl(): string {
   if (!baseUrl) {
-    throw new Error("Missing VITE_CONVEX_HTTP_URL. Add it in Vercel project environment variables.");
+    throw new Error(
+      "Missing Convex URL. Set VITE_CONVEX_HTTP_URL (or VITE_CONVEX_SITE_URL) in .env.local and Vercel.",
+    );
   }
   return baseUrl;
 }

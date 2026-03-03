@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { sections } from "../questionnaire";
 import { submitQuestionnaire } from "../api/convexHttp";
 import type { AnswerValue, AnswersMap, QuestionField } from "../types";
@@ -39,11 +39,62 @@ function createInitialAnswers(): AnswersMap {
   return result;
 }
 
+function isTextEntryTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) {
+    return false;
+  }
+
+  if (target.isContentEditable || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) {
+    return true;
+  }
+
+  if (target instanceof HTMLInputElement) {
+    return !["button", "checkbox", "color", "file", "radio", "range", "reset", "submit"].includes(
+      target.type,
+    );
+  }
+
+  return false;
+}
+
+function isShortcutBlockedByTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) {
+    return false;
+  }
+
+  if (target.closest(".picker-menu")) {
+    return true;
+  }
+
+  if (target instanceof HTMLButtonElement || target instanceof HTMLAnchorElement) {
+    return true;
+  }
+
+  if (target instanceof HTMLInputElement) {
+    return ["checkbox", "radio"].includes(target.type);
+  }
+
+  return false;
+}
+
 function renderInput(
   field: QuestionField,
   value: AnswerValue,
   onChange: (newValue: AnswerValue) => void,
 ): JSX.Element {
+  if (field.type === "select") {
+    return (
+      <select value={typeof value === "string" ? value : ""} onChange={(event) => onChange(event.target.value)}>
+        <option value="">Select an option</option>
+        {(field.options ?? []).map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
   if (field.type === "textarea") {
     return (
       <textarea
@@ -162,6 +213,53 @@ export function QuestionnairePage() {
   const current = questionSteps[activeIndex];
   const isLastStep = activeIndex === questionSteps.length - 1;
 
+  const onSubmit = useCallback(async (): Promise<void> => {
+    setSubmitting(true);
+    setError(null);
+    try {
+      const response = await submitQuestionnaire({
+        clientName: String(answers.client_name ?? ""),
+        contactRole: String(answers.contact_role ?? ""),
+        contactInfo: String(answers.email_phone ?? ""),
+        answers,
+      });
+      setSubmittedId(response.id);
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (submitError) {
+      console.error(submitError);
+      setError("Could not submit right now. Please try again in a minute.");
+    } finally {
+      setSubmitting(false);
+    }
+  }, [answers]);
+
+  const goToPreviousStep = useCallback(() => {
+    setActiveIndex((prev) => Math.max(0, prev - 1));
+  }, []);
+
+  const goToNextStep = useCallback(() => {
+    setActiveIndex((prev) => Math.min(questionSteps.length - 1, prev + 1));
+  }, []);
+
+  const clearCurrentAnswer = useCallback(() => {
+    setAnswers((prev) => {
+      const updated = { ...prev };
+      updated[current.field.key] = current.field.type === "checkbox-group" ? [] : "";
+      return updated;
+    });
+  }, [current.field.key, current.field.type]);
+
+  const continueFromCurrentStep = useCallback(() => {
+    if (submitting) {
+      return;
+    }
+    if (isLastStep) {
+      void onSubmit();
+      return;
+    }
+    goToNextStep();
+  }, [goToNextStep, isLastStep, onSubmit, submitting]);
+
   useEffect(() => {
     localStorage.setItem(
       STORAGE_KEY,
@@ -201,25 +299,49 @@ export function QuestionnairePage() {
     setSectionMenuOpen(false);
   }, [activeIndex]);
 
-  async function onSubmit(): Promise<void> {
-    setSubmitting(true);
-    setError(null);
-    try {
-      const response = await submitQuestionnaire({
-        clientName: String(answers.client_name ?? ""),
-        contactRole: String(answers.contact_role ?? ""),
-        contactInfo: String(answers.email_phone ?? ""),
-        answers,
-      });
-      setSubmittedId(response.id);
-      localStorage.removeItem(STORAGE_KEY);
-    } catch (submitError) {
-      console.error(submitError);
-      setError("Could not submit right now. Please try again in a minute.");
-    } finally {
-      setSubmitting(false);
+  useEffect(() => {
+    function handleShortcut(event: KeyboardEvent): void {
+      if (event.defaultPrevented || event.repeat || event.altKey || event.ctrlKey || event.metaKey) {
+        return;
+      }
+
+      const isEnter = event.key === "Enter";
+      const isSpace = event.key === " " || event.key === "Spacebar";
+      if (!isEnter && !isSpace) {
+        return;
+      }
+
+      if (isShortcutBlockedByTarget(event.target)) {
+        return;
+      }
+
+      if (isEnter && event.target instanceof HTMLTextAreaElement && event.shiftKey) {
+        return;
+      }
+
+      if (isSpace && isTextEntryTarget(event.target)) {
+        return;
+      }
+
+      if (showIntro) {
+        event.preventDefault();
+        setShowIntro(false);
+        return;
+      }
+
+      if (submittedId || sectionMenuOpen) {
+        return;
+      }
+
+      event.preventDefault();
+      continueFromCurrentStep();
     }
-  }
+
+    document.addEventListener("keydown", handleShortcut);
+    return () => {
+      document.removeEventListener("keydown", handleShortcut);
+    };
+  }, [continueFromCurrentStep, sectionMenuOpen, showIntro, submittedId]);
 
   return (
     <main className="page-shell">
@@ -346,40 +468,38 @@ export function QuestionnairePage() {
               )}
             </label>
             <p className="micro-text">Tip: short bullet-style answers are perfectly fine.</p>
+            <p className="micro-text">Shortcut: Enter to continue. Space also continues when not typing.</p>
 
             <section className="actions-inline">
               <button
                 type="button"
                 className="btn-secondary"
-                onClick={() => setActiveIndex((prev) => Math.max(0, prev - 1))}
+                onClick={goToPreviousStep}
                 disabled={activeIndex === 0}
               >
                 Back
               </button>
 
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={() =>
-                  setAnswers((prev) => {
-                    const updated = { ...prev };
-                    updated[current.field.key] = current.field.type === "checkbox-group" ? [] : "";
-                    return updated;
-                  })
-                }
-              >
+              <button type="button" className="btn-secondary" onClick={clearCurrentAnswer}>
                 Clear
               </button>
 
               {isLastStep ? (
-                <button type="button" className="btn-primary" disabled={submitting} onClick={onSubmit}>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  aria-keyshortcuts="Enter Space"
+                  disabled={submitting}
+                  onClick={onSubmit}
+                >
                   {submitting ? "Submitting..." : "Submit Questionnaire"}
                 </button>
               ) : (
                 <button
                   type="button"
                   className="btn-primary"
-                  onClick={() => setActiveIndex((prev) => Math.min(questionSteps.length - 1, prev + 1))}
+                  aria-keyshortcuts="Enter Space"
+                  onClick={continueFromCurrentStep}
                 >
                   Save and Continue
                 </button>

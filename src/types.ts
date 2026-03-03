@@ -1,7 +1,7 @@
 export type QuestionField = {
   key: string;
   label: string;
-  type: "text" | "textarea" | "checkbox-group" | "number";
+  type: "text" | "textarea" | "checkbox-group" | "number" | "select";
   placeholder?: string;
   options?: string[];
 };
