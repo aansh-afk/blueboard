@@ -3,7 +3,7 @@ import { sections } from "../questionnaire";
 import { submitQuestionnaire } from "../api/convexHttp";
 import type { AnswerValue, AnswersMap, QuestionField } from "../types";
 
-const STORAGE_KEY = "vvg-questionnaire-progress-v2";
+const STORAGE_KEY = "ltf1-client-suite-questionnaire-progress-v2";
 
 type QuestionStep = {
   sectionId: string;
@@ -352,11 +352,11 @@ export function QuestionnairePage() {
               <span className="dot red" />
               <span className="dot amber" />
               <span className="dot green" />
-              <p>vvg - onboarding-questionnaire.tsx</p>
+              <p>ltf1-client-suite - onboarding-questionnaire.tsx</p>
             </div>
             <p className="hero-command">&gt; start client_onboarding</p>
-            <h1>Welcome to VVG</h1>
-            <p className="hero-subname">Aansh Naidu - Co-Founder, Vivid Verse Global</p>
+            <h1>Welcome to LTF1 client suite</h1>
+            <p className="hero-subname">Aansh Naidu - Co-Founder, LTF1 client suite</p>
             <p className="hero-subtitle">We will ask one thing at a time. Takes about 8-12 minutes.</p>
             <div className="hero-accent" />
           </section>
@@ -364,10 +364,12 @@ export function QuestionnairePage() {
           <section className="welcome-card">
             <p className="label">// BEFORE WE START</p>
             <h3>Quick and clear process.</h3>
-            <p>
-              1) You answer this form. 2) We review it and send your project brief within 24 hours.
-              3) We confirm timeline and kickoff. If any question feels unclear, skip it and continue.
-            </p>
+            <ol className="welcome-steps">
+              <li>You answer this form.</li>
+              <li>We review it and send your project brief within 24 hours.</li>
+              <li>We confirm timeline and kickoff.</li>
+            </ol>
+            <p>If any question feels unclear, skip it and continue.</p>
             <section className="actions-inline top-gap">
               <button type="button" className="btn-primary" onClick={() => setShowIntro(false)}>
                 Start Questions

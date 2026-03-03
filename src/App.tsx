@@ -9,7 +9,7 @@ export function App() {
   return (
     <div>
       <header className="topbar">
-        <p className="topbar-left">VVG</p>
+        <p className="topbar-left">LTF1 client suite</p>
         <p className="topbar-center">// CLIENT ONBOARDING PORTAL</p>
         {onResponsesPage ? (
           <nav className="topbar-nav">

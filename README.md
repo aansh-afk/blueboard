@@ -1,6 +1,6 @@
-# VVG Client Onboarding Portal
+# LTF1 client suite onboarding portal
 
-React + Convex onboarding app for Vivid Verse Global.
+React + Convex onboarding app for LTF1 client suite.
 
 ## What this includes
 
@@ -79,4 +79,4 @@ python3 -m venv .venv
 
 Output:
 
-- `assets/vvg_client_welcome_letter.pdf`
+- `assets/ltf1_client_suite_welcome_letter.pdf`

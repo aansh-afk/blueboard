@@ -43,7 +43,7 @@ export function ResponsesPage() {
           <span className="dot red" />
           <span className="dot amber" />
           <span className="dot green" />
-          <p>vvg - response-viewer.tsx</p>
+          <p>ltf1-client-suite - response-viewer.tsx</p>
         </div>
         <p className="hero-command">&gt; open client_responses</p>
         <h1>Responses Dashboard</h1>
@@ -148,7 +148,7 @@ export function ResponsesPage() {
                       `response-${selected._id}.md`,
                       answersToMarkdown(
                         selected.answers,
-                        `VVG Client Response - ${selected.clientName || "Unknown"}`,
+                        `LTF1 client suite response - ${selected.clientName || "Unknown"}`,
                         selected.submittedAt,
                       ),
                       "text/markdown",

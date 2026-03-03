@@ -90,7 +90,7 @@ def cover_bg(c, doc) -> None:
 
     c.setFillColor(TEXT_TERTIARY)
     c.setFont("Mono", 8)
-    c.drawCentredString(W / 2, H - 74, "vvg - welcome-letter.pdf")
+    c.drawCentredString(W / 2, H - 74, "ltf1-client-suite - welcome-letter.pdf")
 
     y = H - 200
     c.setFillColor(INDIGO)
@@ -103,7 +103,7 @@ def cover_bg(c, doc) -> None:
 
     c.setFillColor(TEXT_TERTIARY)
     c.setFont("Mono-Medium", 11)
-    c.drawString(MARGIN, y - 44, "Aansh Naidu - Co-Founder, Vivid Verse Global")
+    c.drawString(MARGIN, y - 44, "Aansh Naidu - Co-Founder, LTF1 client suite")
 
     c.setFillColor(INDIGO_GLOW)
     c.setFont("Inter-SemiBold", 16)
@@ -122,7 +122,7 @@ def cover_bg(c, doc) -> None:
     c.setFillColor(TEXT_SECONDARY)
     c.setFont("Inter", 10)
     lines = [
-        "Thank you for choosing VVG.",
+        "Thank you for choosing LTF1 client suite.",
         "This letter explains how we run onboarding and when you can",
         "expect each milestone after questionnaire submission.",
     ]
@@ -156,7 +156,7 @@ def content_bg(c, doc) -> None:
 
     c.setFillColor(INDIGO)
     c.setFont("Mono-Bold", 8)
-    c.drawString(MARGIN, H - 22, "VVG")
+    c.drawString(MARGIN, H - 22, "LTF1 client suite")
     c.setFillColor(TEXT_TERTIARY)
     c.setFont("Mono", 7)
     c.drawCentredString(W / 2, H - 22, "// CLIENT WELCOME LETTER")
@@ -208,7 +208,7 @@ def build_pdf(output_path: Path) -> Path:
     story.append(Paragraph("We are excited to build with you.", styles["h2"]))
     story.append(
         Paragraph(
-            "Thank you for partnering with Vivid Verse Global. We focus on clarity, speed, and high execution quality. This letter sets expectations so your team always knows what happens next.",
+            "Thank you for partnering with LTF1 client suite. We focus on clarity, speed, and high execution quality. This letter sets expectations so your team always knows what happens next.",
             styles["body"],
         )
     )
@@ -267,13 +267,13 @@ def build_pdf(output_path: Path) -> Path:
 
     story.append(Paragraph("// SIGN-OFF", styles["label"]))
     story.append(Paragraph("Looking forward to building something exceptional together.", styles["body"]))
-    story.append(Paragraph("Aansh Naidu - Co-Founder, Vivid Verse Global", styles["body"]))
+    story.append(Paragraph("Aansh Naidu - Co-Founder, LTF1 client suite", styles["body"]))
 
     doc.build(story)
     return output_path
 
 
 if __name__ == "__main__":
-    output = ASSETS / "vvg_client_welcome_letter.pdf"
+    output = ASSETS / "ltf1_client_suite_welcome_letter.pdf"
     generated = build_pdf(output)
     print(f"PDF generated: {generated}")

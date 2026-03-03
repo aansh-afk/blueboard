@@ -313,6 +313,18 @@ h3 {
   font-size: 14px;
 }
 
+.welcome-steps {
+  margin: 0 0 10px;
+  padding-left: 22px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.welcome-steps li + li {
+  margin-top: 2px;
+}
+
 .section-helper {
   margin: 0 0 14px;
   color: var(--text-tertiary);
