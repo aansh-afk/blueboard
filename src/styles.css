@@ -49,7 +49,7 @@ body::before {
   z-index: 20;
   height: 36px;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr auto;
   align-items: center;
   padding: 0 20px;
   background: var(--bg-surface);
@@ -73,9 +73,24 @@ body::before {
   text-align: center;
 }
 
-.topbar-right {
-  color: var(--text-muted);
-  text-align: right;
+.topbar-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.topbar-nav a {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border: 2px solid var(--border);
+  padding: 3px 8px;
+  background: var(--bg-card);
+}
+
+.topbar-nav a:hover {
+  color: var(--indigo-glow);
+  border-color: var(--indigo);
 }
 
 .page-shell {
@@ -276,6 +291,12 @@ h3 {
   font-size: 14px;
 }
 
+.section-helper {
+  margin: 0 0 10px;
+  color: var(--text-tertiary);
+  font-size: 14px;
+}
+
 .field-grid {
   display: grid;
   gap: 8px;
@@ -335,6 +356,31 @@ textarea:focus {
   font-size: 13px;
 }
 
+.check-item {
+  border: 2px solid var(--border);
+  background: var(--bg-surface);
+  padding: 10px;
+  min-height: 44px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--text-secondary);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+}
+
+.progress-bar-wrap {
+  height: 14px;
+  border: 2px solid var(--border);
+  background: var(--bg-surface);
+  margin-bottom: 12px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--indigo), var(--indigo-glow));
+}
+
 input[type="checkbox"] {
   accent-color: var(--indigo);
   width: 15px;
@@ -343,7 +389,7 @@ input[type="checkbox"] {
 
 .actions-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -378,6 +424,79 @@ button:hover {
   padding: 8px 14px;
 }
 
+.status {
+  margin: 8px 0;
+  color: var(--text-secondary);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+
+.status.error {
+  color: var(--red);
+}
+
+.status.ok {
+  color: var(--green);
+}
+
+.responses-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 12px;
+}
+
+.response-item {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  gap: 2px;
+}
+
+.response-item strong {
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+.response-item span {
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.preview-box {
+  border: 2px solid var(--border);
+  background: var(--bg-surface);
+  padding: 10px;
+}
+
+.preview-box p {
+  margin: 0;
+}
+
+.preview-label {
+  color: var(--text-muted);
+  font-size: 9px;
+  font-family: "IBM Plex Mono", monospace;
+  margin-bottom: 4px;
+}
+
+.preview-scroll {
+  max-height: 460px;
+  overflow: auto;
+  margin-top: 10px;
+  border: 2px solid var(--border);
+  background: var(--bg-surface);
+}
+
+.preview-row {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.preview-row p {
+  margin: 0;
+}
+
 .footer p {
   margin: 0;
   color: var(--text-muted);
@@ -389,7 +508,8 @@ button:hover {
   .metrics-grid,
   .checks-grid,
   .field-grid.two,
-  .actions-row {
+  .actions-row,
+  .responses-layout {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -403,7 +523,7 @@ button:hover {
   }
 
   .topbar-center,
-  .topbar-right {
+  .topbar-nav {
     text-align: left;
   }
 
@@ -411,7 +531,8 @@ button:hover {
   .checks-grid,
   .field-grid.two,
   .actions-row,
-  .checks-grid.two-col {
+  .checks-grid.two-col,
+  .responses-layout {
     grid-template-columns: 1fr;
   }
 
